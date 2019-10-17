@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en-us">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Rock Paper Scissors Part 1</title>
+</head>
+
+<body>
+
+    <div id="game">
+        <H1>The Psychic Game</H1>
+        <p>Guess what letter I am thinking of</p>
+        <p>Wins: <span id="wins">0</span></p>
+        <p>Losses: <span id="loss">0</span> </p>
+        <p>Guesses Left: <span id="guessLeft">9</span> </p>
+        <p>Your Guesses so far: <span id="guesses"></span> </p>
+
+
+    </div>
+
+    <script type="text/javascript">
+        var wins = 0;
+        var loss = 0;
+        var guessLeft = 9;
+        var guesses = [];
+        var userChoice = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        var compChoice = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z"];
+        var compPic;
+
+        // confirm("Start game")
+        function comp() {
+            var rand = compChoice[Math.floor(Math.random() * compChoice.length)];
+            compPic = rand;
+            console.log("comp pick: " + compPic);
+        }
+        function writeGuesses() {
+            document.getElementById("guesses").textContent = guesses;
+        }
+        function writeWins() {
+            document.getElementById("wins").textContent = wins;
+        }
+        function writeLoss() {
+            document.getElementById("loss").textContent = loss;
+        }
+
+        document.onkeyup = function (event) {
+            var userInput = event.key.toLowerCase();
+            check(userInput)
+        }
+
+        function check(userInput) {
+            for (var i = 0; i < userChoice.length; i++) {
+                if (userChoice[i] === userInput) {
+                    // console.log(compPic);
+                    if (userInput === compPic) {
+                        // console.log(userInput);
+                        wins = wins + 1;
+                        writeWins();
+                        // console.log(wins);
+                        comp();
+                        guesses = [];
+                        writeGuesses();
+                    }
+                    else {
+                        if (guesses.length < 9) {
+                            if (guesses.includes(userInput)) { 
+                                console.log("already guessed");
+                                
+                            }else {
+                                guesses.push(userInput);
+                                console.log(guesses);
+                                writeGuesses();
+                            }
+
+
+                        }
+                        else {
+                            //Loss
+                            console.log("you Lose");
+                            
+                        }
+                    }
+                }
+            }
+        }
+
+        function guessChecker(userInput) {
+
+
+        }
+
+
+        //Call Function
+        comp()
+
+    </script>
+
+</body>
+
+</html>
