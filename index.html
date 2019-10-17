@@ -3,7 +3,9 @@
 
 <head>
     <meta charset="UTF-8">
-    <title>Rock Paper Scissors Part 1</title>
+    <title>The Psychic Game</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+
 </head>
 
 <body>
@@ -15,6 +17,8 @@
         <p>Losses: <span id="loss">0</span> </p>
         <p>Guesses Left: <span id="guessLeft">9</span> </p>
         <p>Your Guesses so far: <span id="guesses"></span> </p>
+
+        <p style="position:relative; top:40px ;;border: 1px solid black;" id="cheat"><strong>CHEAT</strong></p>
 
 
     </div>
@@ -32,16 +36,17 @@
         function comp() {
             var rand = compChoice[Math.floor(Math.random() * compChoice.length)];
             compPic = rand;
-            console.log("comp pick: " + compPic);
+            // console.log("comp pick: " + compPic);
         }
-        function writeGuesses() {
+        function writeResults() {
             document.getElementById("guesses").textContent = guesses;
-        }
-        function writeWins() {
+            document.getElementById("guessLeft").textContent = guessLeft;
             document.getElementById("wins").textContent = wins;
-        }
-        function writeLoss() {
             document.getElementById("loss").textContent = loss;
+        }
+        function reset() {
+            guesses = [];
+            guessLeft = 9;
         }
 
         document.onkeyup = function (event) {
@@ -56,40 +61,55 @@
                     if (userInput === compPic) {
                         // console.log(userInput);
                         wins = wins + 1;
-                        writeWins();
                         // console.log(wins);
                         comp();
-                        guesses = [];
-                        writeGuesses();
+                        reset();
+                        writeResults();
+                            if (wins === 15) {
+                                alert("You won the game");
+                                reset();
+                                wins = 0;
+                                loss = 0;
+                                comp();
+                                writeResults();
+                            }
                     }
                     else {
-                        if (guesses.length < 9) {
-                            if (guesses.includes(userInput)) { 
+                        if (guesses.length < 8) {
+                            if (guesses.includes(userInput)) {
                                 console.log("already guessed");
-                                
-                            }else {
-                                guesses.push(userInput);
-                                console.log(guesses);
-                                writeGuesses();
+
+                            } else {
+                                if (guessLeft > 0) {
+                                    guesses.push(userInput);
+                                    guessLeft = guessLeft - 1;
+                                    // console.log(guesses);
+                                    writeResults();
+                                }
                             }
-
-
                         }
                         else {
-                            //Loss
-                            console.log("you Lose");
-                            
+                            loss = loss + 1;
+                            comp();
+                            reset();
+                            writeResults();
+                            //Loss & Reset count for Guessess and add a loss point
+
                         }
                     }
                 }
             }
         }
 
-        function guessChecker(userInput) {
+
+        var cheatbutton = document.getElementById("cheat").onclick
 
 
-        }
-
+$("#cheat").on("click",function () {
+    console.log("--------");
+    console.log("CHEATER");
+    console.log("Computer answer " + compPic)
+})
 
         //Call Function
         comp()
